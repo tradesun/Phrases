@@ -30,11 +30,12 @@
 </div>
 
     <div id="msg">
-    	<div id="close">X</div>
+
     	<div class="msg_content"><div class="frgn"></div><div class="eng"></div></div>
     	
     	<div class="btns">
     		<div class="button" id="set">Set</div><div class="button" id="add">Add</div>
+    		<div class="button" id="close">Close</div>
     	</div>
     </div>
 
@@ -111,7 +112,7 @@
 				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
 				st1 = $(".msg_content").html();
 				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
-				//add_history();
+				add_history();
 			}
 			replace_flag=false;
 		})
@@ -125,14 +126,14 @@
 			if (selected_frgn.includes('<x>')) {postfix = '_';} else {postfix = '';}
 	    	$('.frgn').html('<span class="wrd' + postfix +'"><span class="b_wrd">' + selected_frgn + '</span><span class="b_eng">' + selected_eng + '</span></span>');
 			$('.eng').html();
-			//add_history();
+			add_history();
 		});
 	   
 	   $('#add').click(function(){
 			if (selected_frgn.includes('<x>')) {postfix = '_';} else {postfix = '';}
 			$('.frgn').append('<span class="wrd"><span class="b_wrd">' + selected_frgn + '</span><span class="b_eng"> ' + selected_eng + '</span></span>');
 		    $('.eng').append();
-		   // add_history();
+		   add_history();
 		});
 	   
 	   $('#browse').click(function(){
@@ -155,7 +156,7 @@
 				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
 				st1 = $(".msg_content").html();
 				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
-				//add_history();
+				add_history();
 			}
 		   
 	   });   
@@ -234,7 +235,7 @@
 	  #wrap{    
 		  width: 98%;
    		
-    	  height: 650px;
+    	  height: 720px;
 	  }
 	  
 	  #search{ 
@@ -279,10 +280,7 @@
 	display:none;
 	  }
 	  
-	  div#close {
-    position: fixed;
-    right: 50px;
-}
+
 	  
 	  .btns {
     clear: both;
@@ -304,9 +302,10 @@ x {
 	color: #bbb;
 }
 
-span.wrd {
+.wrd,.wrd_ {
     float: left;
 	margin-right: 8px;
+	margin-top: 15px;
 }
 	  
 span.b_eng {
@@ -315,13 +314,17 @@ span.b_eng {
 }
 	  
 	  .button {
-    padding: 5px 24px;
+    padding: 5px 0px;
     border: solid 1px;
-    width: 24px;
+    width: 60px;
     float: left;
-    margin-left: 30px;
     margin-top: 100px;
+    text-align: center;
+    margin-left: 30px;
 }
+ 
+	  #set{margin-left: 45px;}
+	  
 	  
 	  
 	  .msg_content {
