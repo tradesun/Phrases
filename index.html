@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<script src="jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+
+
+<body >
+
+<div id="wrap">
+	<input id="search"/>
+	<div id="switch_lng">> <</div>
+	<div id="browse"> B </div>
+	<div id="edit"> E </div>
+	<div id="history"> H </div>
+	<div id="sres"></div>
+	
+	<div id="bank">
+      <ul>
+
+	  </ul>
+	</div>
+   
+
+	
+</div>
+
+    <div id="msg">
+    	<div id="close">X</div>
+    	<div class="msg_content"><div class="frgn"></div><div class="eng"></div></div>
+    	
+    	<div class="btns">
+    		<div class="button" id="set">Set</div><div class="button" id="add">Add</div>
+    	</div>
+    </div>
+
+</body>
+   <script>
+	   from='eng';
+	   
+	   $.get('words_ky' , function( data ) {word_ky = data.split(',')});
+	   $.get('words_eng', function( data ) {word_eng = data.split(',')});
+	  
+	   
+		$('#search').keyup(function(){
+			sr = $("#search").val().toLowerCase();
+			if (sr.length < 2) return;
+			$('#sres').html('');
+            for(x=0;x<word_eng.length;x++){
+				
+				if (from=='eng'){
+					if (word_eng[x].includes(sr)){
+						if (word_eng[x]==sr){
+						 $('#sres').prepend('<li>' + word_eng[x] + '<span>'+ word_ky[x] + '</span></li>');
+						} else {
+						 $('#sres').append('<li>' + word_eng[x] + '<span>'+ word_ky[x] + '</span></li>');
+						}
+					}
+				} else {
+					if (word_ky[x].includes(sr)){
+						if (word_ky[x]==sr){
+						 $('#sres').prepend('<li>' + word_ky[x] + '<span>'+ word_eng[x] + '</span></li>');
+						} else {
+						 $('#sres').append('<li>' + word_ky[x] + '<span>'+ word_eng[x] + '</span></li>');
+						}
+					}	
+				}
+				
+				
+			}
+		})
+		
+		$('#switch_lng').click(function(){
+			if (from=='eng'){
+			  from='ky';
+			} else {
+			  from='eng';
+			}
+		});
+		
+		
+		selected = '';
+		replace_flag = false;
+	   
+		$('#sres').on('click','li',function(){
+				//alert($(this).text());
+			  $('#msg').show();
+			  $('#wrap').hide();
+			
+			if ($(this).html().includes('</hh>')){
+			      w_ky = localStorage.getItem("ky").split('@@');
+				  id=$(this).find('hh').attr('id');
+				console.log(w_ky[id]);
+			      $('.frgn').html(w_ky[id]);
+				  replace_flag=false;
+			 	  return;
+				  
+			}
+			
+			var node = $(this).contents().filter(function() {return this.nodeType == 3;});
+				selected_eng =node.text().toLowerCase();
+				selected_frgn =$(this).find('span').html();
+			if (replace_flag){
+				st1 = $(".msg_content").html();
+				$(".msg_content").html(st1.replace(replace_frgn,selected_frgn));
+				st1 = $(".msg_content").html();
+				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
+				st1 = $(".msg_content").html();
+				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
+				//add_history();
+			}
+			replace_flag=false;
+		})
+		
+		$('#close').click(function(){
+			  $('#msg').hide();
+			  $('#wrap').show();
+		});
+	   
+	    $('#set').click(function(){
+			if (selected_frgn.includes('<x>')) {postfix = '_';} else {postfix = '';}
+	    	$('.frgn').html('<span class="wrd' + postfix +'"><span class="b_wrd">' + selected_frgn + '</span><span class="b_eng">' + selected_eng + '</span></span>');
+			$('.eng').html();
+			//add_history();
+		});
+	   
+	   $('#add').click(function(){
+			if (selected_frgn.includes('<x>')) {postfix = '_';} else {postfix = '';}
+			$('.frgn').append('<span class="wrd"><span class="b_wrd">' + selected_frgn + '</span><span class="b_eng"> ' + selected_eng + '</span></span>');
+		    $('.eng').append();
+		   // add_history();
+		});
+	   
+	   $('#browse').click(function(){
+		   $('#sres').html('');
+            for(x=0;x<130;x++){
+				$('#sres').append('<li>' + word_eng[x] + '<span>'+ word_ky[x] + '</span></li>');
+			}
+		});
+	   
+
+	   $('#edit').click(function(){
+		   	  $('#msg').show();
+			  $('#wrap').hide();
+				selected_eng =$("#search").val().toLowerCase();
+				selected_frgn =$("#search").val().toLowerCase();
+			if (replace_flag){
+				st1 = $(".msg_content").html();
+				$(".msg_content").html(st1.replace(replace_frgn,selected_frgn));
+				st1 = $(".msg_content").html();
+				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
+				st1 = $(".msg_content").html();
+				$(".msg_content").html(st1.replace(replace_eng,selected_eng));
+				//add_history();
+			}
+		   
+	   });   
+	
+	   
+	   x_flag=false;	
+	   
+	   $('.msg_content').on('click','.wrd',function(){
+		   replace_flag=true;
+		   console.log($(this).find('.b_eng').text())
+		   replace_eng = $(this).find('.b_eng').text()
+		   replace_frgn = $(this).find('.b_wrd').text()
+		   $('#msg').hide();
+		   $('#wrap').show();	
+		});
+	   
+	   
+	   $('.msg_content').on('click','x',function(){
+		   replace_flag=true;
+		   replace_eng = $(this).children('y').text();
+		   console.log($(this).children('y').text());
+		   var node = $(this).contents().filter(function() {return this.nodeType == 3;});
+		   replace_frgn = node.text();
+		   console.log($(this));
+		   $('#msg').hide();
+		   $('#wrap').show();
+		});   
+	   
+	   
+	$('[lang="EN-US"').each(function(){
+		$(this).text();		
+	});
+	   
+	   
+	   $('#history').click(function(){
+		   w_eng = localStorage.getItem("eng").split('@@');
+		     $('#sres').html('');
+		   	for(x=0;x<w_eng.length;x++){
+				$('#sres').append('<li>' + w_eng[x] + '<span>'+ w_eng[x] + '</span><hh id="'+x+'"></hh></li>');
+			}
+	   });  
+	   
+	   
+	   function add_history(){
+		eng='';
+		$('.b_eng').each(function(){
+			eng = eng + $(this).text();			
+		}); 
+		   console.log(eng);
+		ky = '';  
+		$('.b_wrd').each(function(){
+			ky = ky + $(this).html();			
+		});
+		console.log(ky);
+		st = localStorage.getItem("eng");
+		st = eng + '@@' + st;
+		localStorage.setItem('eng',st);		
+		
+		st = localStorage.getItem("ky");
+		st = ky +'@@' + st;
+		localStorage.setItem('ky',st);	
+	   }
+	   
+	   
+	    if (localStorage.getItem("eng") === null) {
+           localStorage.setItem('eng','')
+		}
+	   	if (localStorage.getItem("ky") === null) {
+           localStorage.setItem('ky','')
+		}
+	   
+
+	   
+	</script>
+  <style>
+	  #wrap{    
+		  width: 98%;
+   		
+    	  height: 650px;
+	  }
+	  
+	  #search{ 
+		  width: 52%;
+		  font-size: 18px;
+		  padding: 7px 0;
+	  }
+	  
+	  #bank{display:none;}
+	  
+	  #sres	span{display:none;}
+	  
+	  #sres {
+    height: 500px;
+    overflow-y: scroll;
+}
+	  
+	 #switch_lng {
+		float: right;
+		border: 1px solid;
+		padding: 7px 4px;
+	}
+	  
+	 #browse,#edit,#history
+	  {
+		    float: right;
+    border: 1px solid;
+    padding: 7px 11px;
+    margin-right: 6px;
+	}
+	  
+	  
+	  #sres li{    border-bottom: solid 1px;
+   
+    padding: 10px;
+	  list-style: none;}
+	  
+	  #msg{    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 20px;
+	display:none;
+	  }
+	  
+	  div#close {
+    position: fixed;
+    right: 50px;
+}
+	  
+	  .btns {
+    clear: both;
+}
+
+y {
+    position: absolute;
+    margin-top: -11px;
+    font-size: 11px;
+    left: 0px; 
+}
+	  
+x {
+    position:relative;
+}
+	  
+	  .b_eng {
+    font-size: 15px;
+	color: #bbb;
+}
+
+span.wrd {
+    float: left;
+	margin-right: 8px;
+}
+	  
+span.b_eng {
+    display: block;
+	
+}
+	  
+	  .button {
+    padding: 5px 24px;
+    border: solid 1px;
+    width: 24px;
+    float: left;
+    margin-left: 30px;
+    margin-top: 100px;
+}
+	  
+	  
+	  .msg_content {
+    padding-top: 100px;
+    padding-left: 30px;
+	padding-right: 30px;
+    font-size: 25px;
+}
+  </style>
+</html>
