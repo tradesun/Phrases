@@ -1,0 +1,422 @@
+﻿//JScript File
+
+/*----------------------------COMMON FUNCTIONS------------------------------------------*/
+function trim(strText) 
+{ 
+   // this will get rid of leading spaces 
+   while (strText.substring(0,1) == ' ') 
+       strText = strText.substring(1, strText.length); 
+   // this will get rid of trailing spaces 
+   while (strText.substring(strText.length-1,strText.length) == ' ') 
+       strText = strText.substring(0, strText.length-1); 
+  return strText; 
+} 
+
+// Funtion to check blank value
+function Blank(theField,s)
+{
+    if(trim(theField.value)=="")
+    {
+        
+        jAlert("Please enter " + s);
+        theField.focus();
+        return false;
+    }
+    return true;    
+}
+// Function to check Email
+function chkEmail(theField,msg)
+{
+        var a=theField.value;
+        var reg_mail=(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9-.]+(\.[A-Za-z0-9-.]{2,3})(\.[A-Za-z0-9]{2,3})?$/);
+      
+        if((a.search(reg_mail)==-1))
+          { 
+            jAlert(msg);
+            theField.focus();
+            return false;            
+          }
+        
+          return true;
+          
+}
+//Function to check DropDown
+function SelectDropDown(theField,s)
+{
+    if(theField.selectedIndex==0)
+        {
+            jAlert("Please select " +s);
+            theField.focus();
+            return false;
+        }
+     return true;
+}
+//Function to check url
+function isValidURL(theField,msg)
+{
+    var url=theField.value;
+    var RegExp = /^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/;
+    if(RegExp.test(url))
+    {
+        return true;
+    }
+    else
+    {
+            jAlert(msg);
+            theField.focus();
+            return false;
+    }
+} 
+//Function to check image format
+function isValidImamge(theField,msg)
+{
+    var img=theField.value;
+    var RegExp =/^.*(\.(gif|jpg|bmp|jpeg|png|GIF|JPG|BMP|JPEG|PNG))$/;
+    if(img!="")
+    {
+     if(RegExp.test(img))
+    {
+        return true;
+    }
+    else
+    {
+            jAlert(msg);
+            theField.focus();
+            return false;
+    }
+    }
+    return true;
+}
+//Function to check lenght of the control 
+function lengthRange(theField,len1,len2,msg)
+{
+      var i;
+      var valuec=theField.value;
+      var len=valuec.length;
+      if(valuec!="")
+      {
+     if((len<len1) || (len>len2))
+        {
+      jAlert(msg);
+      theField.focus();
+       return false;
+        } 
+      }
+      return true;
+}
+//Function to validate number 
+function isValidNumber(theField,s)
+{
+     var strno=/^[0-9]+$/;
+     var no=theField.value;
+     
+     if(no!="")
+     {
+     if(strno.test(no))
+     {
+        return true;
+     }
+     else
+     {
+            jAlert("Please enter valid " + s);
+            theField.focus();
+            return false;
+     }
+      }
+      return true;   
+}
+//Function to validate number 
+function isValidFloat(theField,s)
+{
+     var strno=/^[0-9.]+$/;
+     var no=theField.value;
+     if(no!="")
+     {
+     if(strno.test(no))
+     {
+        return true;
+     }
+     else
+     {
+            jAlert("Please enter valid " + s);
+            theField.focus();
+            return false;
+     }
+     }
+      else
+      {
+      return true;
+      }
+}
+function isValidFloat_Prices(theField,theField1,s)
+{
+     var strno=/^[0-9.]+$/;
+     var no=theField.value;
+     if(theField1.selectedIndex!=2)
+     {
+     if(strno.test(no))
+     {
+        return true;
+     }
+     else
+     {
+            jAlert("Please enter valid " + s);
+            theField.focus();
+            return false;
+     }
+      }
+      return true;   
+}
+function Blank_Prices(theField,theField1,s)
+{
+if(theField1.selectedIndex!=2)
+{
+    if(trim(theField.value)=="")
+    {
+        jAlert("Please enter " + s);
+        theField.focus();
+        return false;
+    }
+ 
+ } 
+        return true;   
+
+}
+function isValidNumberWithBlank(theField,s)
+{
+     var strno=/^[0-9]+$/;
+     var no=theField.value;
+     if(no == "")
+     {
+            jAlert("Please enter  " + s);
+            theField.focus();
+            return false;
+     }
+     if(no!="")
+     {
+     if(strno.test(no))
+     {
+        return true;
+     }
+     else
+     {
+            jAlert("Please enter valid " + s);
+            theField.focus();
+            return false;
+     }
+      }
+      return true;   
+}
+function isValidFloatWithBlank(theField,s)
+{
+     var strno=/^[0-9.]+$/;
+     var no=theField.value;
+     if(no == "")
+     {
+            jAlert("Please enter  " + s);
+            theField.focus();
+            return false;
+     }
+     if(no!="")
+     {
+     if(strno.test(no))
+     {
+        return true;
+     }
+     else
+     {
+            jAlert("Please enter valid " + s);
+            theField.focus();
+            return false;
+     }
+      }
+      return true;   
+}
+/*-----------------IncludedOn 19/10/2007--------------------------------------------------*/
+function checkdate(theField)
+{
+var validformat=/^\d{2}\/\d{2}\/\d{4}$/ ;//Basic check for format validity
+var returnval=false;
+if (!validformat.test(theField.value))
+jAlert("Invalid Date Format. Please correct.");
+else
+{ //Detailed check for valid date ranges
+var monthfield=theField.value.split("/")[0];
+var dayfield=theField.value.split("/")[1];
+var yearfield=theField.value.split("/")[2];
+var dayobj = new Date(yearfield, monthfield-1, dayfield);
+if ((dayobj.getMonth()+1!=monthfield)||(dayobj.getDate()!=dayfield)||(dayobj.getFullYear()!=yearfield))
+jAlert("Invalid Day, Month, or Year range detected. Please correct.");
+else
+returnval=true;
+}
+if (returnval==false) 
+{
+theField.select();
+}
+return returnval;
+}
+/*----------------------------SPECIFIC FUNCTIONS----------------------------------------*
+/
+/*---------------------------Functions added by Rafi for User Registration form-------------------*/
+function ValidateRegistration()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtFName'),"First Name."))
+        { 
+        return false;
+        }   
+         if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtLName'),"Last Name."))
+        { 
+        return false;
+        }   
+        if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtEmail'),"Email Id."))
+        { 
+        return false;
+        }   
+        if(!chkEmail(document.getElementById('ctl00_ContentPlaceHolder1_txtEmail'),"Please enter correct format of Email Id."))
+        { 
+        return false;
+        }   
+        
+        if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtRegPassword'),"Password."))
+        { 
+        return false;
+        }
+//        if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtAdress'),"Address."))
+//        { 
+//        return false;
+//        }
+}
+
+function ValidateLogin()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtEmailId'),"Email Id."))
+        { 
+        return false;
+        }   
+        if(!chkEmail(document.getElementById('ctl00_ContentPlaceHolder1_txtEmailId'),"Please enter correct format of Email Id."))
+        { 
+        return false;
+        }   
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtPassword'),"Password."))
+        { 
+        return false;
+        }   
+}
+
+/*---------------------------Begin Functions added by Inaam for Forum validation forms-------------------*/
+
+/*----- Function for Add Thread-----*/
+
+function ValidateAddThread()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtThreadTitle'),"Thread Title."))
+        { 
+        return false;
+        }   
+//     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtContent'),"Thread Message"))
+//        { 
+//        return false;
+//        }   
+}
+
+/*----- Function for Reply-----*/
+function ValidateReply()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtTitle'),"Thread Title."))
+        { 
+        return false;
+        }   
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtContent'),"Thread Message"))
+        { 
+        return false;
+        }   
+        
+ }
+        
+/*---------------------------End Functions added by Inaam for Forum validation forms-------------------*/
+
+
+/*---------------------------Begin Functions added by Inaam for Blog validation forms-------------------*/
+
+
+/*----- Function for Comment-----*/
+function ValidateComment()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtTitle'),"Comment Subject."))
+        { 
+        return false;
+        }   
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtContent'),"Comment Text"))
+        { 
+        return false;
+        }
+        
+        
+}   
+/*---------------------------End Functions added by Inaam for Blog validation forms-------------------*/
+
+
+/*---------------------------Begin Functions added by Inaam for NewsLetterSubscriber validation forms-------------------*/
+
+function ValidateSubscriberNewsLetter()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtNewsLetter'),"Email."))
+        { 
+        return false;
+        }   
+        
+        if(!chkEmail(document.getElementById('ctl00_ContentPlaceHolder1_txtNewsLetter'),"Enter Email in proper format."))
+        { 
+        return false;
+        }   
+     
+}   
+
+/*---------------------------End Functions added by Inaam for NewsLetterSubscriber validation forms-------------------*/
+
+//New function added by Rafi
+/*--------function added by rafi for Addlink page*/
+
+function ValidateLink()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtTitle'),"Title."))
+        { 
+        return false;
+        }   
+         if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtURL'),"URL."))
+        { 
+        return false;
+        }   
+        if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtDescription'),"Description."))
+        { 
+        return false;
+        }   
+}
+//End
+//function added by saurabh to validate monitor textfield on plant page
+function ValidateMonitor()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtMonitorEmail'),"Email."))
+        { 
+        return false;
+        }   
+         if(!chkEmail(document.getElementById('ctl00_ContentPlaceHolder1_txtMonitorEmail'),"Please enter Email Id in correct format."))
+        { 
+        return false;
+        }   
+      
+}
+function ValidateMailForum()
+{
+     if(!Blank(document.getElementById('ctl00_ContentPlaceHolder1_txtSubject'),"Subject."))
+        { 
+        return false;
+        }   
+       
+      
+}
+//End
+
+
+
